@@ -1,6 +1,7 @@
 using Foody.Web.Services;
 using Foody.Web.Services.IServices;
 using Foody.Web.Utils;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,29 @@ builder.Services.AddScoped<IProductService, ProductService>();
 Constants.ProductAPIBase = builder.Configuration["ServiceUrls:ProductAPI"];
 
 builder.Services.AddControllersWithViews();
+
+//specify authentication as openidconnect and configure openidconnect(add required nuget packages)
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "oidc";
+}).AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
+.AddOpenIdConnect("oidc", options =>
+ {
+     options.Authority = builder.Configuration["ServiceUrls:IdentityAPI"];
+     options.GetClaimsFromUserInfoEndpoint = true;
+     options.ClientId = builder.Configuration["Auth:ClientId"];
+     options.ClientSecret = builder.Configuration["Auth:ClientSecret"];
+     options.ResponseType = builder.Configuration["Auth:ResponseType"];
+     options.TokenValidationParameters.NameClaimType = builder.Configuration["Auth:NameClaimType"];
+     options.TokenValidationParameters.RoleClaimType = builder.Configuration["Auth:RoleClaimType"];
+     options.Scope.Add(builder.Configuration["Auth:Scope"]);
+     options.ClaimActions.MapJsonKey("role", "role", "role");
+     options.ClaimActions.MapJsonKey("sub", "sub", "sub");
+     options.SaveTokens = true;
+ });
+
 
 var app = builder.Build();
 
@@ -29,6 +53,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+//add authentication here
+app.UseAuthentication();
 
 app.UseAuthorization();
 

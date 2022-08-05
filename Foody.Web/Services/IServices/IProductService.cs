@@ -4,14 +4,14 @@ namespace Foody.Web.Services.IServices
 {
     public interface IProductService 
     {
-        Task<T> GetallProductsAsync<T>();
+        Task<T> GetallProductsAsync<T>(string token);
 
-        Task<T> GetProductByIdAsync<T>(int id);
+        Task<T> GetProductByIdAsync<T>(int id, string token);
 
-        Task<T> CreateProductAsync<T>(ProductsDto product);
+        Task<T> CreateProductAsync<T>(ProductsDto product, string token);
 
-        Task<T> UpdateProductAsync<T>(ProductsDto product);
+        Task<T> UpdateProductAsync<T>(ProductsDto product, string token);
 
-        Task<T> DeleteProductAsync<T>(int id);
+        Task<T> DeleteProductAsync<T>(int id, string token);
     }
 }

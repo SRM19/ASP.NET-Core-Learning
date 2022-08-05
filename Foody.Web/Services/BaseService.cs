@@ -1,6 +1,7 @@
 ﻿using Foody.Web.Models;
 using Foody.Web.Services.IServices;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace Foody.Web.Services
 {
@@ -29,6 +30,12 @@ namespace Foody.Web.Services
                     httpRequest.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
                         System.Text.Encoding.UTF8,"application/json");
                 }
+
+                if (!string.IsNullOrEmpty(apiRequest.AccessToken))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",apiRequest.AccessToken);
+                }
+
                 HttpResponseMessage httpResponse = null;
                 switch (apiRequest.Method)
                 {
@@ -44,6 +51,8 @@ namespace Foody.Web.Services
                     default: httpRequest.Method = HttpMethod.Get;
                         break;
                 }
+                
+
                 httpResponse = await client.SendAsync(httpRequest);
                 var responseContent = await httpResponse.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<T>(responseContent);

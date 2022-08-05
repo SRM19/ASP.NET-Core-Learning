@@ -1,5 +1,6 @@
 ﻿using Foody.Services.ProductsApi.Models.DataTransferObjs;
 using Foody.Services.ProductsApi.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace Foody.Services.ProductsApi.Controllers
             _response = new ResponseDto();
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<object> Get()
         {
@@ -33,6 +35,7 @@ namespace Foody.Services.ProductsApi.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<object> Get(int id)
         {
@@ -49,6 +52,7 @@ namespace Foody.Services.ProductsApi.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<object> Post([FromBody] ProductsDto product)
         {
@@ -65,6 +69,7 @@ namespace Foody.Services.ProductsApi.Controllers
             return _response;
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<object> Put([FromBody] ProductsDto product)
         {
@@ -81,7 +86,7 @@ namespace Foody.Services.ProductsApi.Controllers
             return _response;
         }
 
-        
+        [Authorize(Roles ="Admin")]
         [HttpDelete("{id}")]
         public async Task<object> Delete(int id)
         {

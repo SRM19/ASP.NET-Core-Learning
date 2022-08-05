@@ -11,55 +11,55 @@ namespace Foody.Web.Services
             clientFactory = httpClient;
         }
 
-        public async Task<T> CreateProductAsync<T>(ProductsDto product)
+        public async Task<T> CreateProductAsync<T>(ProductsDto product, string token)
         {
            return await this.SendRequestAsync<T>(new APIRequest()
             {
                 Method = Utils.Constants.RequestType.POST,
                 Data = product,
                 Url = Utils.Constants.ProductAPIBase + "/api/products",
-                AccessToken = ""
+                AccessToken = token
             });
         }
 
-        public async Task<T> DeleteProductAsync<T>(int id)
+        public async Task<T> DeleteProductAsync<T>(int id, string token)
         {
             return await this.SendRequestAsync<T>(new APIRequest()
             {
                 Method = Utils.Constants.RequestType.DELETE,
                 Url = Utils.Constants.ProductAPIBase + "/api/products/" + id,
-                AccessToken = ""
+                AccessToken = token
             });
         }
 
-        public async Task<T> GetallProductsAsync<T>()
+        public async Task<T> GetallProductsAsync<T>(string token)
         {
             return await this.SendRequestAsync<T>(new APIRequest()
             {
                 Method = Utils.Constants.RequestType.GET,
                 Url = Utils.Constants.ProductAPIBase + "/api/products",
-                AccessToken = ""
+                AccessToken = token
             });
         }
 
-        public async Task<T> GetProductByIdAsync<T>(int id)
+        public async Task<T> GetProductByIdAsync<T>(int id, string token)
         {
             return await this.SendRequestAsync<T>(new APIRequest()
             {
                 Method = Utils.Constants.RequestType.GET,
                 Url = Utils.Constants.ProductAPIBase + "/api/products/" + id,
-                AccessToken = ""
+                AccessToken = token
             });
         }
 
-        public async Task<T> UpdateProductAsync<T>(ProductsDto product)
+        public async Task<T> UpdateProductAsync<T>(ProductsDto product, string token)
         {
             return await this.SendRequestAsync<T>(new APIRequest()
             {
                 Method = Utils.Constants.RequestType.PUT,
                 Data = product,
                 Url = Utils.Constants.ProductAPIBase + "/api/products",
-                AccessToken = ""
+                AccessToken = token
             });
         }
     }
